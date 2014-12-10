@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+	  body {
+	    overflow:hidden;
+	  }
+      div{
+	    height:720PX;
+	    width:1280PX;
+	    text-align:center;
+	    border:0px solid silver;
+	    display: table-cell;
+	    vertical-align:middle;
+	    color:#FFFFFF;
+	    background-color:#000000;
+	    font-weight:bold;
+	    font-family:Verdana, Geneva, sans-serif;
+	    font-size:40px;
+	}
+    </style>
+    <title>Testando</title>
+  </head>
+  <body>
+	<div id="message">Fale comigo</DIV>
+	
+    <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
+    <script type="text/javascript">
+    window.onload = function() {
+        cast.receiver.logger.setLevelValue(0);
+        window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+        
+        // handler for 'senderconnected' event
+        castReceiverManager.onSenderConnected = function(event) {
+          console.log(window.castReceiverManager.getSender(event.data).userAgent);
+        };
+        
+        // handler for 'senderdisconnected' event
+        castReceiverManager.onSenderDisconnected = function(event) {
+          if (window.castReceiverManager.getSenders().length == 0) {
+	        window.close();
+	      }
+        };
+        
+        // create a CastMessageBus to handle messages for a custom namespace
+        window.messageBus = window.castReceiverManager.getCastMessageBus('urn:x-cast:br.com.ilhasoft.data');
+
+        // handler for the CastMessageBus message event
+        window.messageBus.onMessage = function(event) {
+			displayText(event.data);
+        }
+
+        // initialize the CastReceiverManager with an application status message
+        window.castReceiverManager.start({statusText: "Application is starting"});
+      };
+      
+      // utility function to display the text message in the input field
+      function displayText(text) {
+        console.log(text);
+        document.getElementById("message").innerHTML=text;
+        window.castReceiverManager.setApplicationState(text);
+      };
+    </script>
+  </body>
+</html>

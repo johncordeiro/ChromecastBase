@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.com.ilhasoft.chromecast.PlayerActivity">
+
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+
+    <LinearLayout
+        android:layout_above="@+id/controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <SeekBar
+            android:id="@+id/seekTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btStop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_av_stop_light"/>
+
+        <Button
+            android:id="@+id/btPlayPause"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_av_pause_light"/>
+
+        <Button
+            android:id="@+id/btMute"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_device_access_volume_muted"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

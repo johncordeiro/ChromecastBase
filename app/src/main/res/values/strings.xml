@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ChromecastWorkshop</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="video_cast">VideoCast</string>
+    <string name="title_activity_player">PlayerActivity</string>
+    <string name="play">Play</string>
+    <string name="default_video">http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4</string>
+    <string name="title_activity_data">DataActivity</string>
+    <string name="media">Media</string>
+    <string name="data">Data</string>
+    <string name="title">Chromecast Codelab</string>
+    <string name="connect_error">Connect with your Chromecast Device</string>
+    <string name="message_error">Some error occurred sending this message!</string>
+    <string name="default_data">Hello!</string>
+    <string name="send">Send</string>
+    <string name="data_messages">Send Data Messages</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="play_media">Play Media</string>
+
+    <string name="message_namespace">urn:x-cast:br.com.ilhasoft.data</string>
+
+</resources>
