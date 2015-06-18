@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.sample.castcompanionlibrary.cast.DataCastManager;
+import com.google.android.libraries.cast.companionlibrary.cast.DataCastManager;
 
 import br.com.ilhasoft.chromecast.application.ChromecastApplication;
 
@@ -27,10 +27,16 @@ public class DataActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data);
 
-        dataCastManager = ChromecastApplication.getDataCastManager(this);
+        dataCastManager = DataCastManager.getInstance();
 
         setupFields();
         setupToolbar();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        dataCastManager.reconnectSessionIfPossible();
     }
 
     private void setupFields() {

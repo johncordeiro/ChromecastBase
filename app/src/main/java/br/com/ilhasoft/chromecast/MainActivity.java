@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.cast.MediaInfo;
@@ -17,10 +16,9 @@ import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.MediaTrack;
 import com.google.android.gms.cast.TextTrackStyle;
 import com.google.android.gms.common.images.WebImage;
-import com.google.sample.castcompanionlibrary.cast.DataCastManager;
-import com.google.sample.castcompanionlibrary.cast.VideoCastManager;
-import com.google.sample.castcompanionlibrary.utils.Utils;
-import com.google.sample.castcompanionlibrary.widgets.MiniController;
+import com.google.android.libraries.cast.companionlibrary.cast.VideoCastManager;
+import com.google.android.libraries.cast.companionlibrary.utils.Utils;
+import com.google.android.libraries.cast.companionlibrary.widgets.MiniController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +36,23 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        videoCastManager = ChromecastApplication.getVideoCastManager(this);
+        videoCastManager = VideoCastManager.getInstance();
 
         setupFiedls();
         setupToolbar();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        videoCastManager.reconnectSessionIfPossible();
+        videoCastManager.incrementUiCounter();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        videoCastManager.decrementUiCounter();
     }
 
     private void setupFiedls() {
@@ -89,7 +100,7 @@ public class MainActivity extends ActionBarActivity {
                     ,"http://www.technobuffalo.com/wp-content/uploads/2013/08/cheapcast_logo.png");
 
             //Default player
-//            videoCastManager.startCastControllerActivity(MainActivity.this, mediaInfo, 0, true);
+            videoCastManager.startVideoCastControllerActivity(MainActivity.this, mediaInfo, 0, true);
 
             //My own player
             playOnMyActivity(mediaInfo);
@@ -99,15 +110,15 @@ public class MainActivity extends ActionBarActivity {
 
     private void playOnMyActivity(MediaInfo mediaInfo) {
         Intent intent = new Intent(this, PlayerActivity.class);
-        intent.putExtra("media", Utils.fromMediaInfo(mediaInfo));
+        intent.putExtra("media", Utils.mediaInfoToBundle(mediaInfo));
         intent.putExtra("startPoint", 0);
         intent.putExtra("shouldStart", true);
         startActivity(intent);
     }
 
     private MediaInfo buildMediaInfo(String mediaUrl, String contentType, String title, String subtitle, String studio, String imgUrl, String bigImgUrl) {
-        List<MediaTrack> mediaTracks = buildMediaTracks();
-        TextTrackStyle textTrackStyle = TextTrackStyle.fromSystemSettings(this);
+//        List<MediaTrack> mediaTracks = buildMediaTracks();
+//        TextTrackStyle textTrackStyle = TextTrackStyle.fromSystemSettings(this);
 
         MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
 
@@ -118,12 +129,12 @@ public class MainActivity extends ActionBarActivity {
         metadata.addImage(new WebImage(Uri.parse(bigImgUrl)));
 
         return new MediaInfo.Builder(mediaUrl)
-                           .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
-                           .setContentType(contentType)
-//                           .setMediaTracks(mediaTracks)
-//                           .setTextTrackStyle(textTrackStyle)
-                           .setMetadata(metadata)
-                           .build();
+                .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
+                            .setContentType(contentType)
+//                            .setMediaTracks(mediaTracks)
+//                            .setTextTrackStyle(textTrackStyle)
+                .setMetadata(metadata)
+                            .build();
     }
 
     private List<MediaTrack> buildMediaTracks() {
